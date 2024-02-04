@@ -1,5 +1,5 @@
 # myenv
 ```
-git clone git@github.com:vgavriilidis/myenv.git ~/workspace/personal-repositories/myenv
+git clone git@github.com:vgavriilidis/myenv.git $HOME/workspace/personal-repositories/myenv
 ```
 
