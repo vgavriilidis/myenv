@@ -76,9 +76,18 @@ plugins=(
     direnv
     ssh-agent
     git
+    kubectl
+    #kube-ps1
+    docker
+    globalias
+    #z
 )
-
 source $ZSH/oh-my-zsh.sh
+
+GLOBALIAS_FILTER_VALUES=(grep)
+
+# I cannot make plugin work
+#eval "$(direnv hook zsh)"
 
 # User configuration
 
@@ -109,3 +118,4 @@ source $ZSH/oh-my-zsh.sh
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+

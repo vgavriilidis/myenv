@@ -17,12 +17,14 @@ set incsearch
 set laststatus=2
 set colorcolumn=80
 set hlsearch
+set ttymouse=xterm2 
 set mouse=a
 set backspace=indent,eol,start
 set so=5
 
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
+" install pluging if not already installed
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -52,7 +54,8 @@ Plug 'hashivim/vim-terraform'  " :TerraformFmt
 Plug 'preservim/vim-markdown'
 Plug 'mechatroner/rainbow_csv'      " to query csv
 Plug 'speshak/vim-cfn'              " for cloud formation templates
-Plug 'puremourning/vimspector' " for debugging
+Plug 'christoomey/vim-tmux-navigator'
+"Plug 'puremourning/vimspector' " for debugging
 call plug#end()
 
 " format with goimport instead of gofmt golang
@@ -108,6 +111,7 @@ set shortmess-=S
 " set higher dold leve on start
 set foldlevel=10
 let g:SimpylFold_docstring_preview = 1
+set foldmethod=syntax
 
 colorscheme gruvbox
 set background=dark
@@ -115,6 +119,7 @@ set t_Co=256
 
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 let g:ctrlp_use_cashing = 0
+
 " On results press ctrl_v to open in new window
 " Select multiple results by ctrl+z and then open them by ctrl+o
 " F5 to refresh project
@@ -127,29 +132,29 @@ let g:gitgutter_enabled = 1
 " In your ~/.vimrc
 " This is to move up or down
 " Normal mode
-nnoremap <C-j> :m .+1<CR>==
-nnoremap <C-k> :m .-2<CR>==
+"nnoremap <C-J> :m .+1<CR>==
+"nnoremap <C-K> :m .-2<CR>==
+"
+"" Insert mode
+"inoremap <C-J> <ESC>:m .+1<CR>==gi
+"inoremap <C-K> <ESC>:m .-2<CR>==gi
+"
+"" Visual mode
+"vnoremap <C-J> :m '>+1<CR>gv=gv
+"vnoremap <C-K> :m '<-2<CR>gv=gv
 
-" Insert mode
-inoremap <C-j> <ESC>:m .+1<CR>==gi
-inoremap <C-k> <ESC>:m .-2<CR>==gi
-
-" Visual mode
-vnoremap <C-j> :m '>+1<CR>gv=gv
-vnoremap <C-k> :m '<-2<CR>gv=gv
-
-" coc mappings go to code and such
-" Use tab for trigger completion with characters ahead and navigate.
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-
+" other plugin before putting this into your config
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-function! s:check_back_space() abort
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
