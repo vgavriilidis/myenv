@@ -7,3 +7,6 @@ alias srczsh='source ~/.zshrc'
 alias cdWork='cd ~/workspace/'
 alias cdnotes='cd ~/notes/'
 alias cdRepos='cd ~/workspace/repositories'
+
+
+alias tmux_enter='tmux a -t notes'

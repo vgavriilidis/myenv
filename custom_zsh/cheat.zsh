@@ -101,5 +101,13 @@ cheatsheet(){
     echo "------------------------------------------------------------------"
     echo "colima start --cpu 4 --memory 8"
     echo "------------------------------------------------------------------"
+    echo "TMUX"
+    echo "<p> + x: create new window"
+    echo "<p> + v,s: split window into panes vertival,hori"
+    echo "<p> + z: (toggle) make you pane take your whole window space"
+    echo "<p> + !: make you pane into a new window "
+    echo "<p> + {,}: move panes around"
+    echo "<p> + q: show numbers of panes and choose to move to it"
+    echo "------------------------------------------------------------------"
 }
 
