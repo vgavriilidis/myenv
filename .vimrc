@@ -21,6 +21,7 @@ set ttymouse=xterm2
 set mouse=a
 set backspace=indent,eol,start
 set so=5
+set re=0 " typescript is slow without this one
 
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
@@ -71,6 +72,7 @@ let g:python_highlight_all = 1
 
 " coc also needs the following after install to detect defititions
 " :CocInstall coc-python
+" :CocInstall coc-pyright
 
 " the followins are prerequisites for jupyter-vim
 " : space + X sends it to jupyter

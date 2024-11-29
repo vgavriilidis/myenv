@@ -21,3 +21,11 @@ create_python_env_better(){
     echo "to use it: set_python_$1"
     source ~/.my_python_envs.sh
 }
+
+bind_python_env(){
+    echo "Create .envrc, make sure there is pyenv enabled"
+
+    echo "export VIRTUAL_ENV=$VIRTUAL_ENV" > .envrc
+    echo 'export PATH=$PATH:$VIRTUAL_ENV/bin' >> .envrc
+    echo "layout python3" >> .envrc
+}
