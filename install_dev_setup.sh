@@ -37,6 +37,8 @@ if [ "$machine" == "Mac" ]; then
     else
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     fi
+
+    echo "link ohmyzsh"
     ln -sf $HOME/workspace/personal-repositories/myenv/.zshenv $HOME/.zshenv
     ln -sf $HOME/workspace/personal-repositories/myenv/.zshrc  $HOME/.zshrc
 
@@ -47,6 +49,7 @@ if [ "$machine" == "Mac" ]; then
         brew install vim
     fi
 
+    echo "link vim"
     ln -sf $HOME/workspace/personal-repositories/myenv/.vimrc  $HOME/.vimrc
 
     if command_exists tmux; then
@@ -55,6 +58,8 @@ if [ "$machine" == "Mac" ]; then
         echo "install tmux"
         brew install tmux
     fi
+
+    echo "link tmux"
     ln -sf $HOME/workspace/personal-repositories/myenv/.tmux.conf  $HOME/.tmux.conf
 
     if test -d $HOME/.tmux/plugins/tpm; then
@@ -81,29 +86,10 @@ if [ "$machine" == "Mac" ]; then
         curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
     fi
     # "need to run `kitty +kitten themes` afterwards"
+
+    echo "link kitty"
     mkdir -p $HOME/.config/kitty
     ln -sf $HOME/workspace/personal-repositories/myenv/kitty/kitty.conf $HOME/.config/kitty/kitty.conf
-
-
-else 
-    echo "Linux, somewhere else "
-    apt-get update
-
-    if command_exists vim; then
-        echo "vim already installed"
-    else
-        echo "install vim"
-        apt-get install vim
-    fi
-    ln -sf $HOME/workspace/personal-repositories/myenv/.vimrc  $HOME/.vimrc
-
-
-    if command_exists tmux; then
-        echo "tmux already installed"
-    else
-        echo "install tmux"
-        apt-get install tmux
-    fi
 fi
 
 
