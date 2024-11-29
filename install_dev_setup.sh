@@ -52,6 +52,17 @@ if [ "$machine" == "Mac" ]; then
     echo "link vim"
     ln -sf $HOME/workspace/personal-repositories/myenv/.vimrc  $HOME/.vimrc
 
+
+
+    if command_exists nvim; then
+        echo "neovim already installed"
+    else
+        echo "install neovim"
+        brew install nvim
+    fi
+
+
+
     if command_exists tmux; then
         echo "tmux already installed"
     else
