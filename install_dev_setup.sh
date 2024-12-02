@@ -25,6 +25,8 @@ if [ "$machine" == "Mac" ]; then
     mkdir -p $HOME/workspace/personal-repositories
     mkdir -p $HOME/workspace/repositories
 
+    mkdir -p $HOME/.config/nvim
+
     if command_exists brew; then
         echo "brew already installed"
     else
@@ -53,6 +55,8 @@ if [ "$machine" == "Mac" ]; then
     ln -sf $HOME/workspace/personal-repositories/myenv/.vimrc  $HOME/.vimrc
 
 
+    echo "link nvim"
+    ln -sf $HOME/workspace/personal-repositories/myenv/nvim/init.lua  $HOME/.config/init.lua
 
     if command_exists nvim; then
         echo "neovim already installed"

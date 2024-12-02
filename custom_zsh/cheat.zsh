@@ -111,3 +111,23 @@ cheatsheet(){
     echo "------------------------------------------------------------------"
 }
 
+cheatsheet_nvim(){
+    echo "nvimtree"
+    echo "------------------------------------------------------------------"
+    echo "ctrl + b: toggle file explorer"
+    echo "ctrl + v: open file in new window"
+    echo "a: create file"
+    echo "r: rename file"
+    echo "d: delete file"
+    echo "g?: open help window"
+    echo "------------------------------------------------------------------"
+    echo "vim session"
+    echo "------------------------------------------------------------------"
+    echo "space + w + r: restore session"
+    echo "space + w + s: save session"
+}
+
+# things missing
+# moving vim windows top bottm with J is weird
+# go to definition under new window
+# open harpoon files in new window #Done

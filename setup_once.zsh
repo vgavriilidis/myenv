@@ -12,8 +12,4 @@ ln -sf $HOME/workspace/personal-repositories/myenv/.vimrc  $HOME/.vimrc
 ln -sf $HOME/workspace/personal-repositories/myenv/.zshenv $HOME/.zshenv
 ln -sf $HOME/workspace/personal-repositories/myenv/.zshrc  $HOME/.zshrc
 
-
-# if kitty is installed TODO
-mkdir -p $HOME/.conf/kitty
-ln -sf $HOME/workspace/personal-repositories/myenv/kitty/kitty.conf $HOME/.conf/kitty/kitty.conf
-
+ln -s $HOME/workspace/personal-repositories/myenv/nvim $HOME/.config/nvim
