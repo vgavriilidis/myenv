@@ -39,6 +39,7 @@ return {
       actions = {
         use_system_clipboard = true,
         open_file = {
+          quit_on_open =false,
           window_picker = {
             enable = false,
           },
