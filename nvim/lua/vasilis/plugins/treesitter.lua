@@ -1,11 +1,8 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  enabled=false,
+  enabled=true,
   event = { "BufReadPre", "BufNewFile" },
   build = ":TSUpdate",
-  dependencies = {
-    "windwp/nvim-ts-autotag",
-  },
   config = function()
     -- import nvim-treesitter plugin
     local treesitter = require("nvim-treesitter.configs")
@@ -29,18 +26,14 @@ return {
         "dockerfile",
         "gitignore",
         "go",
-        "graphql",
         "html",
         "javascript",
         "json",
         "lua",
         "markdown",
         "markdown_inline",
-        "prisma",
         "python",
         "query",
-        "svelte",
-        "tsx",
         "typescript",
         "vim",
         "vimdoc",
