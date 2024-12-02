@@ -1,5 +1,5 @@
 return {
-    "nvim-lua/plenary.nvim",
+    "anuvyklack/middleclass",
     "christoomey/vim-tmux-navigator",
-    "anuvyklack/middleclass"
+    "nvim-lua/plenary.nvim",
 }
