@@ -46,8 +46,6 @@ return {
 				},
 			},
 			update_focused_file = {
-				sync_root_with_cwd = true, -- Sync the root of nvim-tree with the current working directory
-				respect_buf_cwd = true, -- Respect the buffer's directory
 				enable = true, -- Highlight the file in the tree
 				update_root = true, -- Change the root directory to match the file
 			},
