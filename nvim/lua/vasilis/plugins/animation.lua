@@ -1,1 +1,1 @@
-return { "anuvyklack/animation.nvim", requires = "anuvyklack/middleclass", enabled = true }
+return { "anuvyklack/animation.nvim", requires = "anuvyklack/middleclass", enabled = false }

@@ -1,6 +1,6 @@
 return {
 	"anuvyklack/windows.nvim",
-	enabled = true,
+	enabled = false,
 	dependencies = {
 		"anuvyklack/middleclass",
 		"anuvyklack/animation.nvim",
