@@ -114,6 +114,13 @@ return {
 					filetypes = { "sh", "zsh" },
 				})
 			end,
+			["biome"] = function()
+				-- configure graphql language server
+				lspconfig["biome"].setup({
+					capabilities = capabilities,
+					filetypes = { "javascript"},
+				})
+			end,
 			["emmet_ls"] = function()
 				-- configure emmet language server
 				lspconfig["emmet_ls"].setup({

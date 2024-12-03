@@ -123,12 +123,12 @@ cheatsheet_nvim() {
   echo "------------------------------------------------------------------"
   echo "vim session"
   echo "------------------------------------------------------------------"
-  echo "space + w + r: restore session"
-  echo "space + w + s: save session"
+  echo ",wr: restore session"
+  echo ",ws: save session"
   echo "------------------------------------------------------------------"
   echo "nvimtree"
   echo "------------------------------------------------------------------"
-  echo "space + e + f: follow path of file"
+  echo ",ef: toggle follow path of file"
 }
 
 # things missing

@@ -28,6 +28,7 @@ return {
 			-- list of servers for mason to install
 			ensure_installed = {
 				"bashls",
+				"biome",
 				"cssls",
 				"emmet_ls",
 				"gopls",
@@ -45,6 +46,7 @@ return {
 		mason_tool_installer.setup({
 			ensure_installed = {
 				"black", -- python formatter
+				"biome",
 				"eslint_d",
 				"isort", -- python formatter
 				"prettier", -- prettier formatter
