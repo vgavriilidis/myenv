@@ -47,7 +47,7 @@ return {
 			},
 			update_focused_file = {
 				enable = true, -- Highlight the file in the tree
-				update_root = true, -- Change the root directory to match the file
+				update_root = false, -- Change the root directory to match the file
 			},
 			filters = {
 				custom = { ".DS_Store" },

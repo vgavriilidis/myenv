@@ -129,6 +129,11 @@ cheatsheet_nvim() {
   echo "nvimtree"
   echo "------------------------------------------------------------------"
   echo ",ef: toggle follow path of file"
+
+  echo "OTHERS"
+  echo "------------------------------------------------------------------"
+  echo "gc: toggle comments"
+  echo ",fg: format file"
 }
 
 # things missing
