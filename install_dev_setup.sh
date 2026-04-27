@@ -1,111 +1,143 @@
 #!/bin/bash
+set -euo pipefail
 
-unameOut="$(uname -s)"
-case "${unameOut}" in
-    Linux*)     machine=Linux;;
-    Darwin*)    machine=Mac;;
-    CYGWIN*)    machine=Cygwin;;
-    MINGW*)     machine=MinGw;;
-    *)          machine="UNKNOWN:${unameOut}"
-esac
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+#==============================================================================
+# Helpers
+#==============================================================================
 
-command_exists () {
-    type "$1" &> /dev/null ;
+log()  { printf '\n\033[1;34m==>\033[0m %s\n' "$*"; }
+warn() { printf '\033[1;33m⚠️  %s\033[0m\n' "$*"; }
+ok()   { printf '\033[1;32m✓\033[0m %s\n' "$*"; }
+have() { command -v "$1" >/dev/null 2>&1; }
+
+detect_os() {
+    case "$(uname -s)" in
+        Darwin*) echo Mac ;;
+        Linux*)  echo Linux ;;
+        *)       echo Unsupported ;;
+    esac
 }
 
+#==============================================================================
+# Steps
+#==============================================================================
 
-if [ "$machine" == "Mac" ]; then
-    echo "Macos, Local"
+create_folders() {
+    log "Creating folders"
+    mkdir -p \
+        "$HOME/notes" \
+        "$HOME/workspace/forks" \
+        "$HOME/workspace/open-source" \
+        "$HOME/workspace/personal-repositories" \
+        "$HOME/workspace/repositories" \
+        "$HOME/.config/kitty" \
+        "$HOME/.ssh"
+    chmod 700 "$HOME/.ssh"
+}
 
-    echo "create folders"
-    mkdir -p $HOME/notes
-    mkdir -p $HOME/workspace/forks
-    mkdir -p $HOME/workspace/open-source
-    mkdir -p $HOME/workspace/personal-repositories
-    mkdir -p $HOME/workspace/repositories
-
-    mkdir -p $HOME/.config/nvim
-
-    if command_exists brew; then
-        echo "brew already installed"
+install_homebrew() {
+    log "Homebrew"
+    if have brew; then
+        ok "brew already installed"
     else
-        echo "install brew"
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        /bin/bash -c \
+            "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+    [ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+}
+
+install_packages() {
+    log "Installing packages (brew)"
+    brew install \
+        vim neovim tmux direnv pyenv git jq \
+        colima qemu docker node just
+
+    # --adopt: take over an existing /Applications/*.app instead of erroring
+    # (e.g. kitty previously installed via upstream installer.sh).
+    brew install --cask --adopt kitty dbeaver-community
+}
+
+install_oh_my_zsh() {
+    log "Oh My Zsh"
+    if [ -d "$HOME/.oh-my-zsh" ]; then
+        ok "oh-my-zsh already installed"
+    else
+        RUNZSH=no CHSH=no sh -c \
+            "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    fi
+}
+
+link_dotfiles() {
+    log "Linking dotfiles"
+
+    ln -sf "$REPO/.zshenv"          "$HOME/.zshenv"
+    ln -sf "$REPO/.zshrc"           "$HOME/.zshrc"
+    ln -sf "$REPO/.vimrc"           "$HOME/.vimrc"
+    ln -sf "$REPO/.tmux.conf"       "$HOME/.tmux.conf"
+    ln -sf "$REPO/.gitconfig"       "$HOME/.gitconfig"
+    ln -sf "$REPO/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+
+    # BSD `ln -sf` nests the link inside an existing real directory rather
+    # than replacing it. Remove any non-symlink first.
+    if [ -d "$HOME/.config/nvim" ] && [ ! -L "$HOME/.config/nvim" ]; then
+        rm -rf "$HOME/.config/nvim"
+    fi
+    ln -sfn "$REPO/nvim" "$HOME/.config/nvim"
+}
+
+seed_local_files() {
+    log "Seeding per-machine files"
+
+    # Stub sourced by .zshrc; created so a missing file doesn't break shells.
+    touch "$HOME/.my_python_envs.sh"
+
+    # Per-machine git identity (untracked). Seed only if missing.
+    if [ ! -f "$HOME/.gitconfig.local" ]; then
+        cat > "$HOME/.gitconfig.local" <<'EOF'
+[user]
+  name = TODO
+  email = TODO
+EOF
+        warn "Created ~/.gitconfig.local — fill in user.name and user.email"
+    fi
+}
+
+install_tpm() {
+    log "tmux plugin manager"
+    if [ -d "$HOME/.tmux/plugins/tpm" ]; then
+        ok "tpm already installed"
+    else
+        git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+    fi
+}
+
+#==============================================================================
+# Main
+#==============================================================================
+
+main() {
+    local os
+    os="$(detect_os)"
+
+    if [ "$os" != "Mac" ]; then
+        warn "Only macOS is supported by this script (detected: $os)"
+        exit 1
     fi
 
-    if test -d $HOME/.oh-my-zsh; then
-        echo "Directory exists."
-    else
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    fi
+    log "macOS setup starting"
 
-    echo "link ohmyzsh"
-    ln -sf $HOME/workspace/personal-repositories/myenv/.zshenv $HOME/.zshenv
-    ln -sf $HOME/workspace/personal-repositories/myenv/.zshrc  $HOME/.zshrc
+    create_folders
+    install_homebrew
+    install_packages
+    install_oh_my_zsh
+    link_dotfiles
+    seed_local_files
+    install_tpm
 
-    if command_exists vim; then
-        echo "vim already installed"
-    else
-        echo "install vim"
-        brew install vim
-    fi
+    log "Setup complete"
+    echo "   Restart your terminal or run: source ~/.zshrc"
+}
 
-    echo "link vim"
-    ln -sf $HOME/workspace/personal-repositories/myenv/.vimrc  $HOME/.vimrc
-
-
-    echo "link nvim"
-    ln -sf $HOME/workspace/personal-repositories/myenv/nvim/init.lua  $HOME/.config/init.lua
-
-    if command_exists nvim; then
-        echo "neovim already installed"
-    else
-        echo "install neovim"
-        brew install nvim
-    fi
-
-
-
-    if command_exists tmux; then
-        echo "tmux already installed"
-    else
-        echo "install tmux"
-        brew install tmux
-    fi
-
-    echo "link tmux"
-    ln -sf $HOME/workspace/personal-repositories/myenv/.tmux.conf  $HOME/.tmux.conf
-
-    if test -d $HOME/.tmux/plugins/tpm; then
-        echo "Directory exists."
-    else
-        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    fi
-
-    # # start a server but don't attach to it
-    # tmux start-server
-    # # create a new session but don't attach to it either
-    # tmux new-session -d
-    # # install the plugins
-    # ~/.tmux/plugins/tpm/scripts/install_plugins.sh
-    # # killing the server is not required, I guess
-    # tmux kill-server
-    # tmux source-file ~/.tmux.conf
-
-
-    if command_exists kitty; then
-        echo "kitty already installed"
-    else
-        echo "install kitty"
-        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-    fi
-    # "need to run `kitty +kitten themes` afterwards"
-
-    echo "link kitty"
-    mkdir -p $HOME/.config/kitty
-    ln -sf $HOME/workspace/personal-repositories/myenv/kitty/kitty.conf $HOME/.config/kitty/kitty.conf
-fi
-
-
-
+main "$@"

@@ -1,0 +1,10 @@
+[push]
+  default = current
+[pull]
+  default = current
+  rebase = true
+[core]
+  editor = vim
+
+[include]
+  path = ~/.gitconfig.local
