@@ -32,6 +32,9 @@ create_folders() {
         "$HOME/workspace/open-source" \
         "$HOME/workspace/personal-repositories" \
         "$HOME/workspace/repositories" \
+        "$HOME/go/bin" \
+        "$HOME/go/src" \
+        "$HOME/go/pkg" \
         "$HOME/.config/kitty" \
         "$HOME/.ssh"
     chmod 700 "$HOME/.ssh"
@@ -52,7 +55,7 @@ install_packages() {
     log "Installing packages (brew)"
     brew install \
         vim neovim tmux direnv pyenv git jq \
-        colima qemu docker node just
+        colima qemu docker node just go
 
     # --adopt: take over an existing /Applications/*.app instead of erroring
     # (e.g. kitty previously installed via upstream installer.sh).
